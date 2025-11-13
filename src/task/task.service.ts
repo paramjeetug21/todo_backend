@@ -9,7 +9,6 @@ export class TaskService {
     private readonly todoModel: typeof Todos,
   ) {}
 
-  // ✅ Add a new task
   async addTask(dto: CreateTaskDto) {
     try {
       const task = await this.todoModel.create({ ...dto });
@@ -19,16 +18,12 @@ export class TaskService {
     }
   }
 
-  // ✅ Mark task as done (instead of delete)
   async markTaskDone(id: string) {
     try {
-      console.log('id==>', id);
       const task = await this.todoModel.findByPk(id);
-      console.log('task==>', task);
       if (!task) {
         throw new HttpException('Task not found', HttpStatus.NOT_FOUND);
       }
-
       task.todoDone = true;
       await task.save();
 

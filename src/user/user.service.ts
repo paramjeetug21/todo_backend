@@ -14,7 +14,6 @@ export class UserService {
     private readonly jwtService: JwtService,
   ) {}
 
-  // 🔹 CREATE USER (Signup)
   async createUser(dto: CreateUserDto) {
     try {
       const existing = await this.userModel.findOne({
@@ -78,7 +77,6 @@ export class UserService {
     }
   }
 
-  // 🔹 DELETE USER
   async deleteUser(id: string) {
     try {
       const user = await this.userModel.findByPk(id);

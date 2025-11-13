@@ -16,7 +16,7 @@ async function bootstrap() {
 
   app.enableCors({
     origin: 'https://new-nine-silk-25.vercel.app',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
 

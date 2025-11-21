@@ -1,13 +1,23 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { config } from 'dotenv';
+config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
   app.enableCors({
-    origin: 'https://new-nine-silk-25.vercel.app',
+    origin: [
+      // optional
+      'https://todo-backend-z2a4-git-main-paramjeetug21s-projects.vercel.app', // your deployed frontend
+    ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Authorization',
     credentials: true,
   });
+
   await app.listen(3000);
+  console.log('Server running on http://localhost:3000');
 }
+
 bootstrap();

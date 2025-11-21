@@ -1,33 +1,20 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from '../src/app.module';
-import { ExpressAdapter } from '@nestjs/platform-express';
-import express from 'express';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-const expressApp = express();
+let cachedServer: any;
 
-async function bootstrap() {
-  const app = await NestFactory.create(
-    AppModule,
-    new ExpressAdapter(expressApp),
-  );
-
-  app.enableCors({
-    origin: 'https://new-nine-silk-25.vercel.app',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-  });
-
-  await app.init();
-  return expressApp;
+async function bootstrapServer() {
+  if (!cachedServer) {
+    const { AppModule } = require('../dist/src/app.module.js');
+    const app = await NestFactory.create(AppModule);
+    app.enableCors();
+    await app.init();
+    cachedServer = app.getHttpAdapter().getInstance();
+  }
+  return cachedServer;
 }
 
-let serverPromise: Promise<any>;
-
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (!serverPromise) {
-    serverPromise = bootstrap();
-  }
-  const server = await serverPromise;
-  server(req, res);
+  const server = await bootstrapServer();
+  return server(req, res);
 }

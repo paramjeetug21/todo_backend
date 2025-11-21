@@ -3,8 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from './user.entity';
 import { CreateUserDto, LoginUserDto } from './user.dto';
 import * as bcrypt from 'bcrypt';
-import { Todos } from 'src/task/task.entity';
-import { Sequelize } from 'sequelize';
+import { Todos } from '../task/task.entity';
 
 @Injectable()
 export class UserService {
